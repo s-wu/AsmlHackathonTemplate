@@ -74,10 +74,10 @@ void ExampleDisplayTask::execute()
    }
 
    //MY_DEBUG_PRINTLN(ct);
-   if (cs == 0)
+   /*if (cs == 0)
     display (31, 7);
    else
-    display (30, 7);
+    display (30, 7);*/
    /*for (int y = 0; y < 8; y++)
     display (m_x, y);*/
    m_lmd.display();

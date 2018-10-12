@@ -44,6 +44,7 @@ void MeshNetwork::update()
 
 void MeshNetwork::sendBroadcast(String &message)
 {
+   MY_DEBUG_PRINT("Stability: "); MY_DEBUG_PRINTLN(m_mesh.stability);
    MY_DEBUG_PRINT("Broadcasting message: "); MY_DEBUG_PRINTLN(message);
    m_mesh.sendBroadcast(message, false); // false: Do not include self.
 }
