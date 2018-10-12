@@ -17,21 +17,27 @@
 
     <button type="button" onclick="action()">Start</button>
     <button type="button" onclick="action()">Stop</button>
-    <p>Option 1: Send customer patterns</p>
-    <button type="button" onclick="save1()">Send</button>
-    <div id="visual" style="margin-top: 10px;">
-        <table id="tb1Main" style="float: left; margin-right: 20px;">
-        </table>
-        <table id="tb2Main">
-        </table>
-    </div>
-    <p><br><br>Option 2: Send input text patterns</p>
+    <p>Option 1: Send input text patterns</p>
     <input type="text" id="input">
     <button type="button" onclick="save2()">Send</button>
+    <p><br>Option 2: Send customer patterns</p>
+    <button type="button" onclick="buildNewTable()">Add</button>
+    <button type="button" onclick="RemoveLastTable()">Remove</button>
+    <button type="button" onclick="save1()">Send</button>
+    <div id="visual" style="margin-top: 10px;">
+    </div>
+
 </div>
 <script>
-    function buildTable(tableId) {
-        var tb1 = document.getElementById(tableId);
+    var tablelist = [];
+    function buildNewTable() {
+        var body = document.getElementById("visual");
+        var tb1 = document.createElement('table');
+
+        tb1.style.float = "left";
+        tb1.style.marginRight = "20px";
+        tb1.style.marginTop = "20px";
+
         for (var i = 0; i < 8; i++) {
             var tr = tb1.insertRow();
             for (var j = 0; j < 8; j++) {
@@ -49,9 +55,16 @@
                     };
             }
         }
+        tablelist.push(tb1);
+        body.appendChild(tb1);
     }
-    buildTable("tb1Main");
-    buildTable("tb2Main");
+    function RemoveLastTable() {
+        var body = document.getElementById("visual");
+        var tb = tablelist[tablelist.length-1];
+        body.removeChild(tb);
+        tablelist.pop();
+    }
+    buildNewTable();
     function selectcell(cel) {
         if (cel.style.backgroundColor == 'red')
             cel.style.backgroundColor = 'lightyellow';
@@ -59,25 +72,28 @@
             cel.style.backgroundColor = 'red';
     }
     function save1() {
-        var tb = document.getElementById("tb1Main");
         var res = [];
-        if (tb != null) {
-            for (var i = 0; i < tb.rows.length; i++) {
-                res[i] = [];
-                for (var j = 0; j < tb.rows[i].cells.length; j++) {
-                    if (tb.rows[i].cells[j].style.backgroundColor == 'red')
-                        res[i][j] = 1;
-                    else
-                        res[i][j] = 0;
+        for (var k = 0; k < tablelist.length; k++) {
+            var tb = tablelist[k];
+            var tmp = [];
+            if (tb != null) {
+                for (var i = 0; i < tb.rows.length; i++) {
+                    tmp[i] = [];
+                    for (var j = 0; j < tb.rows[i].cells.length; j++) {
+                        if (tb.rows[i].cells[j].style.backgroundColor == 'red')
+                            tmp[i][j] = 1;
+                        else
+                            tmp[i][j] = 0;
+                    }
                 }
-
+                res[k] = tmp;
             }
         }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: "/save",
-            data: JSON.stringify({res1: [res]}),
+            data: JSON.stringify({res1: res}),
             success: function (data) {
                 alert("DONE!")
             },
