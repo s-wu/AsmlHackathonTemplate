@@ -39,7 +39,7 @@ ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<Str
    m_lmd.setIntensity(LEDMATRIX_INTENSITY);
 
    m_mesh.onReceive(std::bind(&ExampleDisplayTask::receivedCb, this, std::placeholders::_1, std::placeholders::_2));
-    img.push_back("100\n000\n000");
+    img.push_back("100\n000\n000\n");
 }
 
 vector <string> process (String& msg)
@@ -82,13 +82,13 @@ void ExampleDisplayTask::execute()
    int cs = m_mesh.getNodeIndex().first * 8;
    if (m_mesh.getNodeIndex().first == 0)
     m_x = 0;
-   int cloc = 0;
-   while (img.size() > 1 && 1000 * (cloc + 1) + istart + m_x < millis())
+   while (istart >= 10 && img.size() >= 2)
    {
+       istart -= 10;
        img.erase(img.begin());
-       istart += 1000;
    }
-   vector <string> v = process (img[cloc]);
+   istart++;
+   vector <string> v = process (img[0]);
    int sc = scale(v);
    if (sc == 0) sc = 1;
    m_lmd.clear();
@@ -126,7 +126,7 @@ void ExampleDisplayTask::updateImage(String& msg)
 void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)
 {
    //MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
-   MY_DEBUG_PRINTLN(msg);
+   //MY_DEBUG_PRINTLN(msg);
 
    if (msg[0] == 't')
    {
@@ -142,14 +142,7 @@ void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, Stri
    String s = "";
    while (cloc < msg.length())
    {
-       if (msg[cloc] == 't')
-       {
-           int nn = 0;
-           for (int i = cloc + 1; i < msg.length(); i++)
-            nn = 10 *nn + (msg[i] - '0');
-           istart = nn;
-       }
-       else if (msg[cloc] == ',')
+       if (msg[cloc] == ',')
        {
            img.push_back(s);
            s = "";
@@ -158,8 +151,10 @@ void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, Stri
        {
            s += msg[cloc];
        }
+       cloc++;
    }
-   updateImage(msg);
+   istart = 0;
+   execute();
 }
 
 } // namespace Tasks
