@@ -20,7 +20,8 @@ namespace Tasks {
 class ExampleTransmitTask : public Task
 {
 public:
-   explicit ExampleTransmitTask(Facilities::MeshNetwork& mesh);
+   explicit ExampleTransmitTask(Facilities::MeshNetwork& mesh, vector<string>& v);
+   
    ~ExampleTransmitTask() {};
 
    // Disallow copy-ing
@@ -29,6 +30,7 @@ public:
 	ExampleTransmitTask& operator=(const ExampleTransmitTask& other) = delete;
 
    void execute();
+   vector<string>& img;
 
 private:
    Facilities::MeshNetwork& m_mesh;

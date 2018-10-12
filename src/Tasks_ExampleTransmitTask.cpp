@@ -14,12 +14,11 @@
 
 namespace Tasks {
 
-
-ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh) :
+ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh, vector<string>& v) :
    Task(TASK_SECOND * 1 , TASK_FOREVER, std::bind(&ExampleTransmitTask::execute, this)),
-   m_mesh(mesh)
+   m_mesh(mesh),
+   img(v)
 {
-
 }
 
 void ExampleTransmitTask::execute()
@@ -27,15 +26,11 @@ void ExampleTransmitTask::execute()
     if (m_mesh.getNodeIndex().first != 0)
         return;
     string s;
-    int N = 3, M = 3;
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < img.size(); i++)
     {
-        for (int j = 0; j < M; j++)
+        for (int j = 0; j < img[i].length(); j++)
         {
-            if ((i + j) % 2 == 0 && i + j < 4)
-                s += '1';
-            else
-                s += '0';
+            s += img[i][j];
         }
         s += '\n';
     }

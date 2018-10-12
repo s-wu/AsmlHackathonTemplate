@@ -25,7 +25,7 @@ namespace Tasks {
 class ExampleDisplayTask : public Task
 {
 public:
-   explicit ExampleDisplayTask(Facilities::MeshNetwork& mesh);
+   explicit ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<string>& v);
    ~ExampleDisplayTask() {};
 
    // Disallow copy-ing
@@ -45,7 +45,7 @@ private:
 
    Facilities::MeshNetwork& m_mesh;
    LEDMatrixDriver m_lmd;
-   vector <string> img;
+   vector <string>& img;
 
    int m_x;
 

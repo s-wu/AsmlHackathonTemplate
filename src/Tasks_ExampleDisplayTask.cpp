@@ -25,19 +25,20 @@ const int ExampleDisplayTask::LEDMATRIX_CS_PIN = 16;
 const unsigned long ExampleDisplayTask::POLL_DELAY_MS = 100;
 
 //! Initializes the LED Matrix display.
-ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh) :
+ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<string>& v) :
    Task(POLL_DELAY_MS , TASK_FOREVER, std::bind(&ExampleDisplayTask::execute, this)),
    m_mesh(mesh),
    m_lmd(LEDMATRIX_SEGMENTS, LEDMATRIX_CS_PIN),
-   m_x(0)
+   m_x(0),
+   img(v)
 {
    m_lmd.setEnabled(true);
    m_lmd.setIntensity(LEDMATRIX_INTENSITY);
 
    m_mesh.onReceive(std::bind(&ExampleDisplayTask::receivedCb, this, std::placeholders::_1, std::placeholders::_2));
-   img.push_back("101");
-   img.push_back("010");
-   img.push_back("100");
+    img.push_back("101");
+    img.push_back("011");
+    img.push_back("101");
 }
 
 void ExampleDisplayTask::display (int x, int y)
@@ -57,7 +58,7 @@ int ExampleDisplayTask::scale()
 //! Update display
 void ExampleDisplayTask::execute()
 {
-   //MY_DEBUG_PRINTLN("Executing");
+   //MY_DEBUG_PRINTLN(img.size());
    int cs = m_mesh.getNodeIndex().first * 8;
    int sc = scale();
    if (sc == 0) sc = 1;

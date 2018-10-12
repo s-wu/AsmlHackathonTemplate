@@ -6,14 +6,15 @@
 #include "Tasks_ExampleTransmitTask.hpp"
 #include "Tasks_ExampleDisplayTask.hpp"
 
+vector <string> img;
+
 // Translation unit local variables
 namespace {
 
 Scheduler                  taskScheduler;
-
 Facilities::MeshNetwork    meshNetwork;
-Tasks::ExampleTransmitTask exampleTransmitTask(meshNetwork);
-Tasks::ExampleDisplayTask  exampleDisplayTask(meshNetwork);
+Tasks::ExampleTransmitTask exampleTransmitTask(meshNetwork, img);
+Tasks::ExampleDisplayTask  exampleDisplayTask(meshNetwork, exampleTransmitTask.img);
 }
 
 //! Called once at board startup.
