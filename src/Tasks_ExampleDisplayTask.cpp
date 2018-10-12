@@ -47,7 +47,7 @@ void ExampleDisplayTask::execute()
 {
    //MY_DEBUG_PRINTLN("Executing");
    m_lmd.clear();
-   for (int i = 8; i < 32; i++)
+   for (int i = 0; i < 32; i++)
    {
         for (int j = 0; j < 32; j++)
             if (i & (1 << (j & 7)))
