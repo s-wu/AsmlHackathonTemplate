@@ -6,7 +6,7 @@
 #include "Tasks_ExampleTransmitTask.hpp"
 #include "Tasks_ExampleDisplayTask.hpp"
 
-vector <string> img;
+vector <String> img;
 
 // Translation unit local variables
 namespace {
