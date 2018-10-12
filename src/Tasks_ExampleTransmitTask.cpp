@@ -27,36 +27,69 @@ void ExampleTransmitTask::execute()
     if (m_mesh.getNodeIndex().first != 0)
         return;
 
-   int NWAIT = 3;
+    vector <string> vv[4];
+    for (int i = 0; i < 32; i++)
+    {
+        string rn = "";
+        for (int j = 0; j < 32; j++)
+        {
+            int d = i * (i - 31) + j * (j - 31);
+            if (d >= -500 && d <= -220)
+                rn += "1";
+            else
+                rn += "0";
+        }
+        vv[0].push_back(rn);
+    }
+    for (int i = 0; i < 32; i++)
+    {
+        string rn = "";
+        for (int j = 0; j < 32; j++)
+        {
+            int d = i * (i - 31) + j * (j - 31);
+            if (d >= -500 && d <= -450)
+                rn += "1";
+            else
+                rn += "0";
+        }
+        vv[1].push_back(rn);
+    }
+    for (int i = 0; i < 32; i++)
+    {
+        string rn = "";
+        for (int j = 0; j < 32; j++)
+        {
+            int d = i * (i - 31) + j * (j - 31);
+            if (d >= -260 && d <= -220)
+                rn += "1";
+            else
+                rn += "0";
+        }
+        vv[2].push_back(rn);
+    }
+
+    vv[3].push_back("0");
+    
+
+   int NWAIT = 12;
    if (++m_x >= NWAIT)
    {
-       m_x -= NWAIT;
-       bool found = false;
-       for (int i = 0; i < img.size(); i++)
-       {
-           if (found) break;
-           for (int j = 0; j < img[i].length(); j++)
-           {
-               if (img[i][j] == '1')
-                img[i][j] = '0';
-                else
-                {
-                    img[i][j] = '1';
-                    found = true;
-                    break;
-                }
-           }
-       }
+        m_x = 0;       
    }
+   int nt = m_x / 4;
+   if (m_x % 4 == 3) nt = 3;
     string s;
-    for (int i = 0; i < img.size(); i++)
+    for (int i = 0; i < vv[nt].size(); i++)
     {
-        for (int j = 0; j < img[i].length(); j++)
+        for (int j = 0; j < vv[nt][i].length(); j++)
         {
-            s += img[i][j];
+            s += vv[nt][i][j];
         }
         s += '\n';
     }
+    img.clear();
+    for (int i = 0; i < vv[nt].size(); i++)
+        img.push_back(vv[nt][i]);
    const char* c = s.c_str();
    String msg(c);
    MY_DEBUG_PRINTLN(msg);
