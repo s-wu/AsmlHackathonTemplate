@@ -28,10 +28,10 @@ void ExampleTransmitTask::execute()
         return;
 
    int NWAIT = 1;
-   if (++m_x >= NWAIT)
+   while (img.size() < 5)
    {
        String sp = img.back();
-       for (int i = sp.length() - 1; i >= 0; i--)
+       for (int i = 0; i < sp.length(); i++)
        {
            if (sp[i] == '0')
            {
@@ -44,39 +44,27 @@ void ExampleTransmitTask::execute()
        m_x -= NWAIT;
        img.push_back(sp);
    }
+
     string s = "";
     for (int i = 0; i < img.size(); i++)
     {
         s += img[i].c_str();
         s += ',';
     }
-    
-   string rs = "";
-   auto f = millis();
-   while (f)
-   {
-       rs = (char('0' + f % 10) + rs);
-       f /= 10;
-   }
-   rs = "t" + rs;
-   s += rs;
+    const char* c = s.c_str();
+    String m(c);
+    m_mesh.sendBroadcast(m);
 
-   const char* c = s.c_str();
-   String msg(c);
-   MY_DEBUG_PRINTLN(msg);
-   m_mesh.sendBroadcast( msg );
-
-   s = "";
-   f = millis();
-   while (f)
-   {
-       s = (char('0' + f % 10) + s);
-       f /= 10;
-   }
-   s = "t" + s;
-   c = s.c_str();
-   String m(c);
-   m_mesh.sendBroadcast(m);
+    s = "";
+    auto f = millis();
+    while (f)
+    {
+        s = (char ('0' + f % 10)) + s;
+    }
+    s = "t" + s;
+    c = s.c_str();
+    String m2(c);
+    m_mesh.sendBroadcast(m2);
 }
 
 } // namespace Tasks
