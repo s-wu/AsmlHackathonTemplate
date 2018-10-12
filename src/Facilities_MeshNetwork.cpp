@@ -75,6 +75,11 @@ pair <int, int> MeshNetwork::getNodeIndex()
     return make_pair (nc, ntot);
 }
 
+int MeshNetwork::millis()
+{
+    return m_mesh.getNodeTime() / 1000;
+}
+
 
 void MeshNetwork::onReceive(receivedCallback_t receivedCallback)
 {

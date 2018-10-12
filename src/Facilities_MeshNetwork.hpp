@@ -34,6 +34,7 @@ public:
    void sendBroadcast(String& message);
    NodeId getMyNodeId();
    pair <int, int> getNodeIndex();
+   int millis();
 
    void onReceive(receivedCallback_t receivedCallback);
 
