@@ -45,12 +45,13 @@ private:
 
    Facilities::MeshNetwork& m_mesh;
    LEDMatrixDriver m_lmd;
+   vector <string> img;
 
    int m_x;
 
    void receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg);
    void display(int x, int y);
-
+   int scale();
 
 };
 

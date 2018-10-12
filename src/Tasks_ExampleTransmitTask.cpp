@@ -24,11 +24,24 @@ ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh) :
 
 void ExampleTransmitTask::execute()
 {
-   String msg = F("Ping from node ");
-   msg += m_mesh.getMyNodeId();
-   auto l = m_mesh.getAllNodes();
-   for (auto x : l)
-     MY_DEBUG_PRINTLN(x);
+    if (m_mesh.getNodeIndex().first != 0)
+        return;
+    string s;
+    int N = 3, M = 3;
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            if ((i + j) % 2 == 0 && i + j < 4)
+                s += '1';
+            else
+                s += '0';
+        }
+        s += '\n';
+    }
+   const char* c = s.c_str();
+   String msg(c);
+   MY_DEBUG_PRINTLN(msg);
    m_mesh.sendBroadcast( msg );
 }
 

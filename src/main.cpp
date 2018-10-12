@@ -22,7 +22,7 @@ void setup()
    MY_DEBUG_BEGIN(115200);
 
    // Create MeshNetwork
-   meshNetwork.initialize(F("DarkGreen"), F("sprint1"), taskScheduler);
+   meshNetwork.initialize(F("MeshGreen"), F("Mesh-Green-Password"), taskScheduler);
 
    // Create and add tasks.
    taskScheduler.addTask( exampleTransmitTask );

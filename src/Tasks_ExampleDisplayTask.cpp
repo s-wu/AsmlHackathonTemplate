@@ -35,6 +35,9 @@ ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh) :
    m_lmd.setIntensity(LEDMATRIX_INTENSITY);
 
    m_mesh.onReceive(std::bind(&ExampleDisplayTask::receivedCb, this, std::placeholders::_1, std::placeholders::_2));
+   img.push_back("101");
+   img.push_back("010");
+   img.push_back("100");
 }
 
 void ExampleDisplayTask::display (int x, int y)
@@ -42,19 +45,34 @@ void ExampleDisplayTask::display (int x, int y)
     m_lmd.setPixel(x ^ 7, y, true);
 }
 
+int ExampleDisplayTask::scale()
+{
+   if (!img.size() || !img[0].length())
+      return 1;
+   int N = img.size(), M = img[0].length();
+   int nc = 32, mc = 8 * m_mesh.getNodeIndex().second;
+   return min (nc / N, mc / M);
+}
+
 //! Update display
 void ExampleDisplayTask::execute()
 {
    //MY_DEBUG_PRINTLN("Executing");
+   int cs = m_mesh.getNodeIndex().first * 8;
+   int sc = scale();
+   if (sc == 0) sc = 1;
    m_lmd.clear();
    for (int i = 0; i < 32; i++)
    {
-        for (int j = 0; j < 32; j++)
-            if (i & (1 << (j & 7)))
-                display(i, j);
+        for (int j = 0; j < 8; j++)
+        {
+            int x = i / sc, y = (j + cs) / sc;
+            if (x < img.size() && y < img[x].length() && img[x][y] == '1')
+               display (i, j);
+        }
    }
-   for (int y = 0; y < 8; y++)
-    display (m_x, y);
+   /*for (int y = 0; y < 8; y++)
+    display (m_x, y);*/
    m_lmd.display();
 }
 
@@ -62,6 +80,18 @@ void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, Stri
 {
    //MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
    MY_DEBUG_PRINTLN(msg);
+   img.clear();
+   string s = "";
+   for (char c : msg)
+   {
+       if (c == '\n')
+       {
+           img.push_back(s);
+           s = "";
+       }
+       else
+            s += c;
+   }
 
    if(++m_x>LEDMATRIX_WIDTH)
    {

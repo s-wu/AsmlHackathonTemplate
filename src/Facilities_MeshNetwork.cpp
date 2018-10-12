@@ -9,6 +9,7 @@
 
 #include "Facilities_MeshNetwork.hpp"
 
+
 #include "Debug.hpp"
 #include "painlessMesh.h"
 
@@ -52,10 +53,28 @@ MeshNetwork::NodeId MeshNetwork::getMyNodeId()
    return m_mesh.getNodeId();
 }
 
-std::list<uint32_t> MeshNetwork::getAllNodes()
+pair <int, int> MeshNetwork::getNodeIndex()
 {
-   return m_mesh.getNodeList();
+    auto id = m_mesh.getNodeId();
+    vector <uint32_t> v;
+    for (auto x : m_mesh.getNodeList())
+    {
+        v.push_back(x);
+        MY_DEBUG_PRINTLN(x);
+    }
+    sort(v.begin(), v.end());
+    int nc = 0;
+    for (auto x : v)
+        if (x < id)
+            nc++;
+    
+    //MY_DEBUG_PRINTLN("INDEX");
+    //MY_DEBUG_PRINTLN(nc);
+    int ntot = 1 + v.size();
+    //MY_DEBUG_PRINTLN(ntot);
+    return make_pair (nc, ntot);
 }
+
 
 void MeshNetwork::onReceive(receivedCallback_t receivedCallback)
 {

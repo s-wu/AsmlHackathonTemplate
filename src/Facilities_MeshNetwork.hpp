@@ -33,7 +33,7 @@ public:
 
    void sendBroadcast(String& message);
    NodeId getMyNodeId();
-   std::list<uint32_t> getAllNodes();
+   pair <int, int> getNodeIndex();
 
    void onReceive(receivedCallback_t receivedCallback);
 
