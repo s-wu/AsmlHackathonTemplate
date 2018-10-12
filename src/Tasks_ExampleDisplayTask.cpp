@@ -72,15 +72,17 @@ void ExampleDisplayTask::execute()
                display (i, j);
         }
    }
+
+   //MY_DEBUG_PRINTLN(ct);
+   if (cs == 0)
+    display (31, 7);
    /*for (int y = 0; y < 8; y++)
     display (m_x, y);*/
    m_lmd.display();
 }
 
-void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)
+void ExampleDisplayTask::updateImage(String& msg)
 {
-   //MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
-   MY_DEBUG_PRINTLN(msg);
    img.clear();
    string s = "";
    for (char c : msg)
@@ -93,6 +95,15 @@ void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, Stri
        else
             s += c;
    }
+
+   // trim here, lol
+}
+
+void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)
+{
+   //MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
+   MY_DEBUG_PRINTLN(msg);
+   updateImage(msg);
 
    if(++m_x>LEDMATRIX_WIDTH)
    {
