@@ -49,6 +49,7 @@ private:
    int m_x;
 
    void receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg);
+   void display(int x, int y);
 
 
 };

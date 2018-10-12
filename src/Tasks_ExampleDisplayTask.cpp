@@ -37,11 +37,21 @@ ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh) :
    m_mesh.onReceive(std::bind(&ExampleDisplayTask::receivedCb, this, std::placeholders::_1, std::placeholders::_2));
 }
 
+void ExampleDisplayTask::display (int x, int y)
+{
+    m_lmd.setPixel(x ^ 7, y, true);
+}
+
 //! Update display
 void ExampleDisplayTask::execute()
 {
    m_lmd.clear();
-   m_lmd.setPixel(m_x, 0, true);
+   for (int i = 0; i < 128; i++)
+   {
+        for (int j = 0; j < 32; j++)
+            if (i & (1 << (j & 7)))
+                display(i, j);
+   }
    m_lmd.display();
 }
 
