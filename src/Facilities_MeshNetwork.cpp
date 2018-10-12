@@ -22,7 +22,7 @@ const uint16_t MeshNetwork::PORT = 5555;
 MeshNetwork::MeshNetwork()
 {
    m_mesh.onReceive(std::bind(&MeshNetwork::receivedCb, this, std::placeholders::_1, std::placeholders::_2));
-   //m_mesh.onNewConnection(...);
+   m_mesh.onNewConnection(std::bind(&MeshNetwork::newConnect, this));
    //m_mesh.onChangedConnections(...);
    //m_mesh.onNodeTimeAdjusted(...);
 }
@@ -52,6 +52,11 @@ MeshNetwork::NodeId MeshNetwork::getMyNodeId()
    return m_mesh.getNodeId();
 }
 
+std::list<uint32_t> MeshNetwork::getAllNodes()
+{
+   return m_mesh.getNodeList();
+}
+
 void MeshNetwork::onReceive(receivedCallback_t receivedCallback)
 {
    m_mesh.onReceive(receivedCallback);
@@ -60,6 +65,11 @@ void MeshNetwork::onReceive(receivedCallback_t receivedCallback)
 void MeshNetwork::receivedCb(NodeId transmitterNodeId, String& msg)
 {
    MY_DEBUG_PRINTF("Data received from node: %u; msg: %s\n", transmitterNodeId, msg.c_str());
+}
+
+void MeshNetwork::newConnect()
+{
+   MY_DEBUG_PRINTF("New connection!!");
 }
 
 

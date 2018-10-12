@@ -33,6 +33,7 @@ public:
 
    void sendBroadcast(String& message);
    NodeId getMyNodeId();
+   std::list<uint32_t> getAllNodes();
 
    void onReceive(receivedCallback_t receivedCallback);
 
@@ -44,7 +45,7 @@ private:
    painlessMesh       m_mesh;
 
    void receivedCb(NodeId transmitterNodeId, String& msg);
-
+    void newConnect();
 
 };
 

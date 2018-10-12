@@ -45,19 +45,23 @@ void ExampleDisplayTask::display (int x, int y)
 //! Update display
 void ExampleDisplayTask::execute()
 {
+   //MY_DEBUG_PRINTLN("Executing");
    m_lmd.clear();
-   for (int i = 0; i < 128; i++)
+   for (int i = 8; i < 32; i++)
    {
         for (int j = 0; j < 32; j++)
             if (i & (1 << (j & 7)))
                 display(i, j);
    }
+   for (int y = 0; y < 8; y++)
+    display (m_x, y);
    m_lmd.display();
 }
 
 void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)
 {
-   MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
+   //MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
+   MY_DEBUG_PRINTLN(msg);
 
    if(++m_x>LEDMATRIX_WIDTH)
    {

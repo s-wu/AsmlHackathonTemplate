@@ -26,6 +26,9 @@ void ExampleTransmitTask::execute()
 {
    String msg = F("Ping from node ");
    msg += m_mesh.getMyNodeId();
+   auto l = m_mesh.getAllNodes();
+   for (auto x : l)
+     MY_DEBUG_PRINTLN(x);
    m_mesh.sendBroadcast( msg );
 }
 
