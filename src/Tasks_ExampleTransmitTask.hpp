@@ -34,7 +34,7 @@ public:
 
 private:
    Facilities::MeshNetwork& m_mesh;
-
+    int m_x;
 };
 
 } // namespace Tasks

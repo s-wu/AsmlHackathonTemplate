@@ -36,9 +36,9 @@ ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<str
    m_lmd.setIntensity(LEDMATRIX_INTENSITY);
 
    m_mesh.onReceive(std::bind(&ExampleDisplayTask::receivedCb, this, std::placeholders::_1, std::placeholders::_2));
-    img.push_back("101");
-    img.push_back("011");
-    img.push_back("101");
+    img.push_back("100");
+    img.push_back("000");
+    img.push_back("000");
 }
 
 void ExampleDisplayTask::display (int x, int y)

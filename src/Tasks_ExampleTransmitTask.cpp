@@ -17,7 +17,8 @@ namespace Tasks {
 ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh, vector<string>& v) :
    Task(TASK_SECOND * 1 , TASK_FOREVER, std::bind(&ExampleTransmitTask::execute, this)),
    m_mesh(mesh),
-   img(v)
+   img(v),
+   m_x(0)
 {
 }
 
@@ -38,6 +39,27 @@ void ExampleTransmitTask::execute()
    String msg(c);
    MY_DEBUG_PRINTLN(msg);
    m_mesh.sendBroadcast( msg );
+
+   if (++m_x >= 30)
+   {
+       m_x -= 30;
+       bool found = false;
+       for (int i = 0; i < img.size(); i++)
+       {
+           if (found) break;
+           for (int j = 0; j < img[i].length(); j++)
+           {
+               if (img[i][j] == '1')
+                img[i][j] = '0';
+                else
+                {
+                    img[i][j] = '1';
+                    found = true;
+                    break;
+                }
+           }
+       }
+   }
 }
 
 } // namespace Tasks
