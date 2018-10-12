@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<div id="visual" style="display: block">
+    <table id="tblMain">
+    </table>
+    <button type="button" onclick="save()">Save</button>
+</div>
+
+<script>
+
+    var tbl = document.getElementById("tblMain");
+    for (var i = 0; i < 32; i++) {
+        var tr = tbl.insertRow();
+        for (var j = 0; j < 32; j++) {
+            var td = tr.insertCell();
+            td.width = '20px';
+            td.height = "20px";
+            td.style = "background-color:lightyellow";
+        }
+    }
+    if (tbl != null) {
+        for (var i = 0; i < tbl.rows.length; i++) {
+            for (var j = 0; j < tbl.rows[i].cells.length; j++)
+                tbl.rows[i].cells[j].onclick = function () {
+                    selectcell(this);
+                };
+        }
+    }
+    function selectcell(cel) {
+        if (cel.style.backgroundColor == 'red')
+            cel.style.backgroundColor = 'lightyellow';
+        else
+            cel.style.backgroundColor = 'red';
+    }
+    function save() {
+        var tb = document.getElementById("tblMain");
+        var res = [];
+        if (tb != null) {
+            for (var i = 0; i < tb.rows.length; i++) {
+                res[i] = [];
+                for (var j = 0; j < tb.rows[i].cells.length; j++) {
+                    if (tb.rows[i].cells[j].style.backgroundColor == 'red')
+                        res[i][j] = 1;
+                    else
+                        res[i][j] = 0;
+                }
+
+            }
+        }
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/save",
+            data: JSON.stringify({res: res}),
+            success: function (data) {
+                alert("DONE!")
+            },
+            dataType: "json"
+        })
+    }
+</script>
+</body>
+</html>
