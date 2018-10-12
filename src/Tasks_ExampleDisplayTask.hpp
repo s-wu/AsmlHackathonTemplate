@@ -54,6 +54,7 @@ private:
    void receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg);
    void display(int x, int y);
    int scale(vector <string> v);
+   void addTask();
 
 };
 

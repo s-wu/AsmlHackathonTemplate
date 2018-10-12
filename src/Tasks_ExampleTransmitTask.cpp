@@ -27,7 +27,7 @@ void ExampleTransmitTask::execute()
     if (m_mesh.getNodeIndex().first != 0)
         return;
 
-   int NWAIT = 1;
+   /*int NWAIT = 1;
    while (img.size() < 5)
    {
        String sp = img.back();
@@ -43,7 +43,7 @@ void ExampleTransmitTask::execute()
        }
        m_x -= NWAIT;
        img.push_back(sp);
-   }
+   }*/
 
     string s = "";
     for (int i = 0; i < img.size(); i++)
@@ -56,7 +56,7 @@ void ExampleTransmitTask::execute()
     m_mesh.sendBroadcast(m);
 
     s = "";
-    auto f = millis();
+    auto f = m_mesh.millis();
     while (f)
     {
         s = (char ('0' + f % 10)) + s;

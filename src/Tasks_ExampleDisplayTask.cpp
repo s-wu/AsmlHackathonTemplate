@@ -123,6 +123,13 @@ void ExampleDisplayTask::updateImage(String& msg)
    // trim here, lol
 }
 
+void ExampleDisplayTask::addTask()
+{
+    if (m_mesh.getNodeIndex().first != 0)
+      return;
+    
+}
+
 void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)
 {
    //MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
