@@ -26,23 +26,11 @@ void ExampleTransmitTask::execute()
 {
     if (m_mesh.getNodeIndex().first != 0)
         return;
-    string s;
-    for (int i = 0; i < img.size(); i++)
-    {
-        for (int j = 0; j < img[i].length(); j++)
-        {
-            s += img[i][j];
-        }
-        s += '\n';
-    }
-   const char* c = s.c_str();
-   String msg(c);
-   MY_DEBUG_PRINTLN(msg);
-   m_mesh.sendBroadcast( msg );
 
-   if (++m_x >= 30)
+   int NWAIT = 3;
+   if (++m_x >= NWAIT)
    {
-       m_x -= 30;
+       m_x -= NWAIT;
        bool found = false;
        for (int i = 0; i < img.size(); i++)
        {
@@ -60,6 +48,19 @@ void ExampleTransmitTask::execute()
            }
        }
    }
+    string s;
+    for (int i = 0; i < img.size(); i++)
+    {
+        for (int j = 0; j < img[i].length(); j++)
+        {
+            s += img[i][j];
+        }
+        s += '\n';
+    }
+   const char* c = s.c_str();
+   String msg(c);
+   MY_DEBUG_PRINTLN(msg);
+   m_mesh.sendBroadcast( msg );
 }
 
 } // namespace Tasks
