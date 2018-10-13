@@ -24,6 +24,7 @@ ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh, vector<S
 
 void ExampleTransmitTask::execute()
 {
+    m_mesh.pumpNodeIndex();
     MY_DEBUG_PRINT("Currently at ");
     MY_DEBUG_PRINTLN(m_mesh.millis());
     MY_DEBUG_PRINT(img.size());

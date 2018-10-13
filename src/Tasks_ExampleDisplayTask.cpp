@@ -81,9 +81,85 @@ int ExampleDisplayTask::scale(vector <string> v)
    return min (nc / N, mc / M);
 }
 
+int ExampleDisplayTask::taskhi()
+{
+    if (img.size() <= 1)
+    {
+        return m_mesh.millis() + 2000;
+    }
+    vector <string> v = process(img.back());
+    return gv (v.back());
+}
+
+void ExampleDisplayTask::addTask()
+{
+    if (m_mesh.getNodeIndex().first != 0)
+      return;
+    img.push_back(img.back());
+    for (int i = 0; i < img.back().length(); i++)
+    {
+      if (img.back()[i] == '0')
+      {
+        img.back()[i] = '1';
+        break;
+      }
+      else if (img.back()[i] == '1')
+        img.back()[i] = '0';
+    }
+    vector <string> v = process(img.back());
+    v.pop_back();
+    int ct = taskhi();
+    ct += 1000;
+    string s = "";
+    while (ct)
+    {
+      s = (char) (ct % 10 + '0') + s;
+      ct /= 10;
+    }
+    v.push_back(s);
+
+    String ans = "";
+    for (int i = 0; i < v.size(); i++)
+    {
+      const char* c = v[i].c_str();
+      String m(c);
+      m += "\n";
+      ans += m;
+    }
+    img.push_back(ans);
+}
+
+void ExampleDisplayTask::addTask(vector <string> v)
+{
+    int ct = taskhi() + 1000;
+    string s = "";
+    while (ct)
+    {
+      s = (char) (ct % 10 + '0') + s;
+      ct /= 10;
+    }
+    v.push_back(s);
+
+    String ans = "";
+    for (int i = 0; i < v.size(); i++)
+    {
+      const char* c = v[i].c_str();
+      String m(c);
+      m += "\n";
+      ans += m;
+    }
+    img.push_back(ans);
+}
+
 //! Update display
 void ExampleDisplayTask::execute()
 {
+    /*if (m_mesh.getNodeIndex().first == 0)
+    {
+        for (int i = 0; i < 10; i++)
+            if (img.size() < 20)
+                addTask();
+    }*/
     if (!img.size())
         return;
    //MY_DEBUG_PRINTLN(img.size());
@@ -132,44 +208,6 @@ void ExampleDisplayTask::updateImage(String& msg)
     //img.push_back(msg);
 
    // trim here, lol
-}
-
-void ExampleDisplayTask::addTask()
-{
-    if (m_mesh.getNodeIndex().first != 0)
-      return;
-    img.push_back(img.back());
-    for (int i = 0; i < img.back().length(); i++)
-    {
-      if (img.back()[i] == '0')
-      {
-        img.back()[i] = '1';
-        break;
-      }
-      else if (img.back()[i] == '1')
-        img.back()[i] = '0';
-    }
-    vector <string> v = process(img.back());
-    int ct = gv (v.back());
-    v.pop_back();
-    ct += 1000;
-    string s = "";
-    while (ct)
-    {
-      s = (char) (ct % 10 + '0') + s;
-      ct /= 10;
-    }
-    v.push_back(s);
-
-    String ans = "";
-    for (int i = 0; i < v.size(); i++)
-    {
-      const char* c = v[i].c_str();
-      String m(c);
-      m += "\n";
-      ans += m;
-    }
-    img.push_back(ans);
 }
 
 void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)

@@ -33,6 +33,7 @@ public:
 
    void sendBroadcast(String& message);
    NodeId getMyNodeId();
+   void pumpNodeIndex();
    pair <int, int> getNodeIndex();
    int millis();
 
@@ -48,6 +49,7 @@ private:
    void receivedCb(NodeId transmitterNodeId, String& msg);
     void newConnect();
 
+    vector <pair <int, int> > indt;
 };
 
 } // namespace Facilities
