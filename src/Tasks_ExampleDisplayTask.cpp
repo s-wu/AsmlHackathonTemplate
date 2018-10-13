@@ -159,7 +159,7 @@ void ExampleDisplayTask::addTask()
 
 void ExampleDisplayTask::addTask(vector <string> v)
 {
-    int ct = taskhi() + 1000;
+    int ct = taskhi() + 500;
     string s = "";
     while (ct)
     {
@@ -201,7 +201,7 @@ void ExampleDisplayTask::pushWord(string s)
                 rs = "";
             }
             else
-                rs += s[i];
+                rs = s[i] + rs;
         }
         return;
     }
@@ -228,9 +228,45 @@ void ExampleDisplayTask::pushWord(string s)
         reverse(v.begin(), v.end());
         addTask(v);
 
-        v.clear();
+        if (i + 1 < s.length())
+        {
+            ival = IMAGES[(s[i+1] - 'a')];
+            vector <string> v2;
+            for (int j = 0; j < 8; j++)
+            {
+                v2.push_back("");
+                for (int k = 0; k < 8; k++)
+                {
+                    if (ival % 2 == 1)
+                        v2[j] = "1" + v2[j];
+                    else
+                        v2[j] = "0" + v2[j];
+                    ival /= 2;
+                }
+            }
+            reverse(v2.begin(), v2.end());
+
+            for (int x = 2; x <= 6; x += 2)
+            {
+                vector <string> v3;
+                for (int j = 0; j < 8; j++)
+                {
+                    v3.push_back("");
+                    for (int k = 0; k < 8; k++)
+                    {
+                        if (k < x)
+                            v3[j] += v2[j][k+8-x];
+                        else
+                            v3[j] += v[j][k-x];
+                    }
+                }
+                addTask(v3);
+            }
+        }
+
+        /*v.clear();
         v.push_back("0");
-        addTask(v);
+        addTask(v);*/
     }
 }
 
@@ -239,10 +275,6 @@ void ExampleDisplayTask::execute()
 {
     if (m_mesh.getNodeIndex().first == 0)
     {
-        if (img.size() < 10 && false)
-        {
-            pushWord("green");
-        }
         /*for (int i = 0; i < 10; i++)
             if (img.size() < 20)
                 addTask();*/

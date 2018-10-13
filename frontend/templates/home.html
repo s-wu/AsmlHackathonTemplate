@@ -76,7 +76,7 @@
                 for (var i = 0; i < tb.rows.length; i++) {
                     tmp[i] = [];
                     for (var j = 0; j < tb.rows[i].cells.length; j++) {
-                        if (tb.rows[i].cells[j].style.backgroundColor == 'red')
+                        if (tb.rows[tb.rows.length-1-i].cells[j].style.backgroundColor == 'red')
                             tmp[i][j] = 1;
                         else
                             tmp[i][j] = 0;
