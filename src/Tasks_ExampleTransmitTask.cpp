@@ -24,8 +24,13 @@ ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh, vector<S
 
 void ExampleTransmitTask::execute()
 {
+    MY_DEBUG_PRINT("Currently at ");
+    MY_DEBUG_PRINTLN(m_mesh.millis());
+    MY_DEBUG_PRINT(img.size());
+    MY_DEBUG_PRINTLN(" jobs in queue");
     if (m_mesh.getNodeIndex().first != 0)
         return;
+    MY_DEBUG_PRINTLN("ROOT");
 
    /*int NWAIT = 1;
    while (img.size() < 5)
@@ -55,7 +60,7 @@ void ExampleTransmitTask::execute()
     String m(c);
     m_mesh.sendBroadcast(m);
 
-    s = "";
+    /*s = "";
     auto f = m_mesh.millis();
     while (f)
     {
@@ -64,7 +69,7 @@ void ExampleTransmitTask::execute()
     s = "t" + s;
     c = s.c_str();
     String m2(c);
-    m_mesh.sendBroadcast(m2);
+    m_mesh.sendBroadcast(m2);*/
 }
 
 } // namespace Tasks

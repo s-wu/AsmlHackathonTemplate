@@ -39,7 +39,15 @@ ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<Str
    m_lmd.setIntensity(LEDMATRIX_INTENSITY);
 
    m_mesh.onReceive(std::bind(&ExampleDisplayTask::receivedCb, this, std::placeholders::_1, std::placeholders::_2));
-    img.push_back("100\n000\n000\n");
+    img.push_back("100\n000\n000\n0\n");
+}
+
+int gv (string s)
+{
+   int r = 0;
+   for (int i = 0; i < s.length(); i++)
+      r = 10 * r + (s[i] - '0');
+    return r;
 }
 
 vector <string> process (String& msg)
@@ -82,13 +90,16 @@ void ExampleDisplayTask::execute()
    int cs = m_mesh.getNodeIndex().first * 8;
    if (m_mesh.getNodeIndex().first == 0)
     m_x = 0;
-   while (istart >= 10 && img.size() >= 2)
+  int tcur = m_mesh.millis();
+   while (img.size() >= 2)
    {
-       istart -= 10;
+       if (gv (process (img[1]).back()) > tcur) break;
        img.erase(img.begin());
    }
    istart++;
    vector <string> v = process (img[0]);
+   v.pop_back();
+
    int sc = scale(v);
    if (sc == 0) sc = 1;
    m_lmd.clear();
@@ -117,8 +128,8 @@ void ExampleDisplayTask::execute()
 
 void ExampleDisplayTask::updateImage(String& msg)
 {
-    img.clear();
-    img.push_back(msg);
+    //img.clear();
+    //img.push_back(msg);
 
    // trim here, lol
 }
@@ -127,7 +138,38 @@ void ExampleDisplayTask::addTask()
 {
     if (m_mesh.getNodeIndex().first != 0)
       return;
-    
+    img.push_back(img.back());
+    for (int i = 0; i < img.back().length(); i++)
+    {
+      if (img.back()[i] == '0')
+      {
+        img.back()[i] = '1';
+        break;
+      }
+      else if (img.back()[i] == '1')
+        img.back()[i] = '0';
+    }
+    vector <string> v = process(img.back());
+    int ct = gv (v.back());
+    v.pop_back();
+    ct += 1000;
+    string s = "";
+    while (ct)
+    {
+      s = (char) (ct % 10 + '0') + s;
+      ct /= 10;
+    }
+    v.push_back(s);
+
+    String ans = "";
+    for (int i = 0; i < v.size(); i++)
+    {
+      const char* c = v[i].c_str();
+      String m(c);
+      m += "\n";
+      ans += m;
+    }
+    img.push_back(ans);
 }
 
 void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)
