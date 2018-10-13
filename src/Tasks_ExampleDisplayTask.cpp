@@ -67,7 +67,7 @@ ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<Str
    m_lmd.setIntensity(LEDMATRIX_INTENSITY);
 
    m_mesh.onReceive(std::bind(&ExampleDisplayTask::receivedCb, this, std::placeholders::_1, std::placeholders::_2));
-    img.push_back("100\n000\n000\n0\n");
+   pushWord("00011000;00111100;01111110;11111111;11111111;11111111;01100110;00000000;,");
 }
 
 int gv (string s)
@@ -319,6 +319,14 @@ void ExampleDisplayTask::execute()
    /*for (int y = 0; y < 8; y++)
     display (m_x, y);*/
    m_lmd.display();
+
+   /*++m_x;
+   if (m_x % 300 == 0)
+   {
+       int ind = (m_x / 300) % 5;
+       string s[5] = {"asml", "hack", "green", "love", "tech"};
+       pushWord(s[ind]);
+   }*/
 }
 
 void ExampleDisplayTask::updateImage(String& msg)
