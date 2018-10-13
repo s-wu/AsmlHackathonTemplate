@@ -114,10 +114,10 @@
                 alert(this.responseText);
             }
         };
-        xhttp.open("GET", "/save?pattern=" + res, true);
+        xhttp.open("GET", "http://10.14.0.183/pattern?pattern=" + res, true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send();
-        alert("success\n" + res);
+        alert("success");
     }
 </script>
 </body>
