@@ -14,7 +14,7 @@
 
 namespace Tasks {
 
-ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh, vector<string>& v) :
+ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh, vector<String>& v) :
    Task(TASK_SECOND * 1 , TASK_FOREVER, std::bind(&ExampleTransmitTask::execute, this)),
    m_mesh(mesh),
    img(v),
@@ -24,43 +24,53 @@ ExampleTransmitTask::ExampleTransmitTask(Facilities::MeshNetwork& mesh, vector<s
 
 void ExampleTransmitTask::execute()
 {
+    m_mesh.pumpNodeIndex();
+    MY_DEBUG_PRINT("Currently at ");
+    MY_DEBUG_PRINTLN(m_mesh.millis());
+    MY_DEBUG_PRINT(img.size());
+    MY_DEBUG_PRINTLN(" jobs in queue");
     if (m_mesh.getNodeIndex().first != 0)
         return;
+    MY_DEBUG_PRINTLN("ROOT");
 
-   int NWAIT = 3;
-   if (++m_x >= NWAIT)
+   /*int NWAIT = 1;
+   while (img.size() < 5)
    {
-       m_x -= NWAIT;
-       bool found = false;
-       for (int i = 0; i < img.size(); i++)
+       String sp = img.back();
+       for (int i = 0; i < sp.length(); i++)
        {
-           if (found) break;
-           for (int j = 0; j < img[i].length(); j++)
+           if (sp[i] == '0')
            {
-               if (img[i][j] == '1')
-                img[i][j] = '0';
-                else
-                {
-                    img[i][j] = '1';
-                    found = true;
-                    break;
-                }
+            sp[i] = '1';
+            break;
            }
+           if (sp[i] == '1')
+            sp[i] = '0';
        }
-   }
-    string s;
+       m_x -= NWAIT;
+       img.push_back(sp);
+   }*/
+
+    string s = "";
     for (int i = 0; i < img.size(); i++)
     {
-        for (int j = 0; j < img[i].length(); j++)
-        {
-            s += img[i][j];
-        }
-        s += '\n';
+        s += img[i].c_str();
+        s += ',';
     }
-   const char* c = s.c_str();
-   String msg(c);
-   MY_DEBUG_PRINTLN(msg);
-   m_mesh.sendBroadcast( msg );
+    const char* c = s.c_str();
+    String m(c);
+    m_mesh.sendBroadcast(m);
+
+    /*s = "";
+    auto f = m_mesh.millis();
+    while (f)
+    {
+        s = (char ('0' + f % 10)) + s;
+    }
+    s = "t" + s;
+    c = s.c_str();
+    String m2(c);
+    m_mesh.sendBroadcast(m2);*/
 }
 
 } // namespace Tasks

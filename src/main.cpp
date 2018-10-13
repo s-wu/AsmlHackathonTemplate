@@ -6,7 +6,7 @@
 #include "Tasks_ExampleTransmitTask.hpp"
 #include "Tasks_ExampleDisplayTask.hpp"
 
-vector <string> img;
+vector <String> img;
 
 // Translation unit local variables
 namespace {
@@ -26,10 +26,11 @@ void setup()
    meshNetwork.initialize(F("MeshGreen"), F("Mesh-Green-Password"), taskScheduler);
 
    // Create and add tasks.
-   taskScheduler.addTask( exampleTransmitTask );
    taskScheduler.addTask( exampleDisplayTask );
-   exampleTransmitTask.enable();
+   taskScheduler.addTask( exampleTransmitTask );
    exampleDisplayTask.enable();
+   delay(100);
+   exampleTransmitTask.enable();
 
 
    MY_DEBUG_PRINTLN(F("Setup completed"));

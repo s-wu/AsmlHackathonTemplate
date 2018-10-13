@@ -53,14 +53,18 @@ MeshNetwork::NodeId MeshNetwork::getMyNodeId()
    return m_mesh.getNodeId();
 }
 
-pair <int, int> MeshNetwork::getNodeIndex()
+void MeshNetwork::pumpNodeIndex()
 {
+    while (indt.size() >= 10)
+    {
+        indt.erase(indt.begin());
+    }
     auto id = m_mesh.getNodeId();
     vector <uint32_t> v;
     for (auto x : m_mesh.getNodeList())
     {
         v.push_back(x);
-        MY_DEBUG_PRINTLN(x);
+        //MY_DEBUG_PRINTLN(x);
     }
     sort(v.begin(), v.end());
     int nc = 0;
@@ -71,8 +75,24 @@ pair <int, int> MeshNetwork::getNodeIndex()
     //MY_DEBUG_PRINTLN("INDEX");
     //MY_DEBUG_PRINTLN(nc);
     int ntot = 1 + v.size();
+    indt.push_back(make_pair (nc, ntot));
+}
+
+pair <int, int> MeshNetwork::getNodeIndex()
+{
     //MY_DEBUG_PRINTLN(ntot);
-    return make_pair (nc, ntot);
+    int chi = 0, rhi = 1;
+    for (int i = 0; i < indt.size(); i++)
+    {
+        chi = max (chi, indt[i].first);
+        rhi = max (rhi, indt[i].second);
+    }
+    return make_pair (chi, rhi);
+}
+
+int MeshNetwork::millis()
+{
+    return m_mesh.getNodeTime() / 1000;
 }
 
 

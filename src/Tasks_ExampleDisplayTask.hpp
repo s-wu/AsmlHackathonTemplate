@@ -25,7 +25,7 @@ namespace Tasks {
 class ExampleDisplayTask : public Task
 {
 public:
-   explicit ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<string>& v);
+   explicit ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<String>& v);
    ~ExampleDisplayTask() {};
 
    // Disallow copy-ing
@@ -45,14 +45,18 @@ private:
 
    Facilities::MeshNetwork& m_mesh;
    LEDMatrixDriver m_lmd;
-   vector <string>& img;
+   vector <String>& img;
+   int istart;
 
    int m_x;
 
    void updateImage(String& msg);
    void receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg);
    void display(int x, int y);
-   int scale();
+   int scale(vector <string> v);
+   int taskhi();
+   void addTask();
+   void addTask(vector<string> v);
 
 };
 
