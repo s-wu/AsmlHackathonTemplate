@@ -23,7 +23,7 @@ def save():
         else:
             output = res.get("res2", "")
         print(output)
-        requests.get("http://10.169.120.101/setPattern", params={"pattern": output})
+        # requests.get("http://10.169.106.100/setPattern", params={"pattern": output})
         # requests.get("http://127.0.0.1/")
         print("ok")
         resp = jsonify(success=True)

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <style>
         table {
             border-collapse: collapse;
@@ -89,30 +88,29 @@
                 res[k] = tmp;
             }
         }
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: "/save",
-            data: JSON.stringify({res1: res}),
-            success: function (data) {
-                alert("DONE!")
-            },
-            dataType: "json"
-        })
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(this.responseText);
+            }
+        };
+        xhttp.open("POST", "/save", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify({"res1": res}));
+
     }
     function save2() {
         var tb = document.getElementById("input").value;
+                var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(this.responseText);
+            }
+        };
+        xhttp.open("POST", "/save", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify({"res2": tb}));
 
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: "/save",
-            data: JSON.stringify({res2: tb}),
-            success: function (data) {
-                alert("DONE!")
-            },
-            dataType: "json"
-        })
     }
 </script>
 </body>
