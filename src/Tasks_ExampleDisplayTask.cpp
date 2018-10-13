@@ -181,6 +181,29 @@ void ExampleDisplayTask::addTask(vector <string> v)
 
 void ExampleDisplayTask::pushWord(string s)
 {
+    if (s[0] >= '0' && s[0] <= '1')
+    {
+        vector <string> v;
+        string rs = "";
+        for (int i = 0; i < s.length(); i++)
+        {
+            if (s[i] == ';')
+            {
+                v.push_back(rs);
+                rs = "";
+            }
+            else if (s[i] == ',')
+            {
+                if (rs.length()) v.push_back(rs);
+                addTask(v);
+                v.clear();
+                rs = "";
+            }
+            else
+                rs += s[i];
+        }
+        return;
+    }
     vector <string> rs;
     rs.push_back("0");
     addTask(rs);
@@ -275,8 +298,16 @@ void ExampleDisplayTask::updateImage(String& msg)
 
 void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)
 {
-   //MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
-   //MY_DEBUG_PRINTLN(msg);
+    if (nodeId == FILLIN)
+    {
+        string s = "";
+        for (int i = 0; i < msg.length(); i++)
+            s += msg[i];
+        pushWord(s);
+        return;
+    }
+   MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
+   MY_DEBUG_PRINTLN(msg);
 
    if (msg[0] == 't')
    {
