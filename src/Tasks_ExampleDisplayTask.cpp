@@ -25,6 +25,34 @@ const int ExampleDisplayTask::LEDMATRIX_SEGMENTS = 4;
 const int ExampleDisplayTask::LEDMATRIX_INTENSITY = 5;
 const int ExampleDisplayTask::LEDMATRIX_CS_PIN = 16;
 const unsigned long ExampleDisplayTask::POLL_DELAY_MS = 100;
+const uint64_t ExampleDisplayTask::IMAGES[] = {
+  0x6666667e66663c00,
+  0x3e66663e66663e00,
+  0x3c66060606663c00,
+  0x3e66666666663e00,
+  0x7e06063e06067e00,
+  0x0606063e06067e00,
+  0x3c66760606663c00,
+  0x6666667e66666600,
+  0x3c18181818183c00,
+  0x1c36363030307800,
+  0x66361e0e1e366600,
+  0x7e06060606060600,
+  0xc6c6c6d6feeec600,
+  0xc6c6e6f6decec600,
+  0x3c66666666663c00,
+  0x06063e6666663e00,
+  0x603c766666663c00,
+  0x66361e3e66663e00,
+  0x3c66603c06663c00,
+  0x18181818185a7e00,
+  0x7c66666666666600,
+  0x183c666666666600,
+  0xc6eefed6c6c6c600,
+  0xc6c66c386cc6c600,
+  0x1818183c66666600,
+  0x7e060c1830607e00
+};
 
 //! Initializes the LED Matrix display.
 ExampleDisplayTask::ExampleDisplayTask(Facilities::MeshNetwork& mesh, vector<String>& v) :
@@ -151,15 +179,50 @@ void ExampleDisplayTask::addTask(vector <string> v)
     img.push_back(ans);
 }
 
+void ExampleDisplayTask::pushWord(string s)
+{
+    vector <string> rs;
+    rs.push_back("0");
+    addTask(rs);
+    for (int i = 0; i < s.length(); i++)
+    {
+        char c = s[i];
+        uint64_t ival = IMAGES[(c - 'a')];
+        vector <string> v;
+        for (int j = 0; j < 8; j++)
+        {
+            v.push_back("");
+            for (int k = 0; k < 8; k++)
+            {
+                if (ival % 2 == 1)
+                    v[j] = "1" + v[j];
+                else
+                    v[j] = "0" + v[j];
+                ival /= 2;
+            }
+        }
+        reverse(v.begin(), v.end());
+        addTask(v);
+
+        v.clear();
+        v.push_back("0");
+        addTask(v);
+    }
+}
+
 //! Update display
 void ExampleDisplayTask::execute()
 {
-    /*if (m_mesh.getNodeIndex().first == 0)
+    if (m_mesh.getNodeIndex().first == 0)
     {
-        for (int i = 0; i < 10; i++)
+        if (img.size() < 10)
+        {
+            pushWord("green");
+        }
+        /*for (int i = 0; i < 10; i++)
             if (img.size() < 20)
-                addTask();
-    }*/
+                addTask();*/
+    }
     if (!img.size())
         return;
    //MY_DEBUG_PRINTLN(img.size());

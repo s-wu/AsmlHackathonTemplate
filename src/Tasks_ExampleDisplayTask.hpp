@@ -34,6 +34,7 @@ public:
 	ExampleDisplayTask& operator=(const ExampleDisplayTask& other) = delete;
 
    void execute();
+   void pushWord(string s);
 
 private:
    static const int LEDMATRIX_WIDTH;
@@ -42,6 +43,8 @@ private:
    static const int LEDMATRIX_INTENSITY;
    static const int LEDMATRIX_CS_PIN;
    static const unsigned long POLL_DELAY_MS;
+   static const uint64_t IMAGES[];
+
 
    Facilities::MeshNetwork& m_mesh;
    LEDMatrixDriver m_lmd;
