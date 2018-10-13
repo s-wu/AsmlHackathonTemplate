@@ -280,10 +280,10 @@ void ExampleDisplayTask::execute()
    //long now = std::chrono::system_clock::now().time_since_epoch() / std::chrono::seconds(1);
    //MY_DEBUG_PRINTLN(second());
    //MY_DEBUG_PRINTLN(now);
-   if (cs == 0)
+   /*if (cs == 0)
     display (31, 7);
    else
-    display (30, 7);
+    display (30, 7);*/
    /*for (int y = 0; y < 8; y++)
     display (m_x, y);*/
    m_lmd.display();
