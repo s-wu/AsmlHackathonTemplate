@@ -51,6 +51,7 @@ void ExampleTransmitTask::execute()
        img.push_back(sp);
    }*/
 
+/*
     string s = "";
     for (int i = 0; i < img.size(); i++)
     {
@@ -71,6 +72,7 @@ void ExampleTransmitTask::execute()
     c = s.c_str();
     String m2(c);
     m_mesh.sendBroadcast(m2);*/
+    
 }
 
 } // namespace Tasks

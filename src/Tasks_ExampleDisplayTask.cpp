@@ -215,10 +215,6 @@ void ExampleDisplayTask::execute()
 {
     if (m_mesh.getNodeIndex().first == 0)
     {
-        if (img.size() < 10)
-        {
-            pushWord("green");
-        }
         /*for (int i = 0; i < 10; i++)
             if (img.size() < 20)
                 addTask();*/
