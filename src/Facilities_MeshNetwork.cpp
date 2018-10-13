@@ -63,9 +63,9 @@ void MeshNetwork::pumpNodeIndex()
     vector <uint32_t> v;
     for (auto x : m_mesh.getNodeList())
     {
-        if (x == FILLIN) continue;
+        if (x == 978879182) continue;
         v.push_back(x);
-        //MY_DEBUG_PRINTLN(x);
+        MY_DEBUG_PRINTLN(x);
     }
     sort(v.begin(), v.end());
     int nc = 0;

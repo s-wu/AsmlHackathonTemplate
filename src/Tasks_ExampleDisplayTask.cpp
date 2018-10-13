@@ -181,6 +181,7 @@ void ExampleDisplayTask::addTask(vector <string> v)
 
 void ExampleDisplayTask::pushWord(string s)
 {
+    if (!s.length()) return;
     if (s[0] >= '0' && s[0] <= '1')
     {
         vector <string> v;
@@ -238,7 +239,7 @@ void ExampleDisplayTask::execute()
 {
     if (m_mesh.getNodeIndex().first == 0)
     {
-        if (img.size() < 10)
+        if (img.size() < 10 && false)
         {
             pushWord("green");
         }
@@ -298,12 +299,16 @@ void ExampleDisplayTask::updateImage(String& msg)
 
 void ExampleDisplayTask::receivedCb(Facilities::MeshNetwork::NodeId nodeId, String& msg)
 {
-    if (nodeId == FILLIN)
+    if (nodeId == 978879182)
     {
+        if (img.size() > 10) return;
         string s = "";
         for (int i = 0; i < msg.length(); i++)
             s += msg[i];
         pushWord(s);
+        MY_DEBUG_PRINTLN("STOP");
+        MY_DEBUG_PRINTLN(msg);
+        MY_DEBUG_PRINTLN("STOP");
         return;
     }
    MY_DEBUG_PRINTLN("Received data in ExampleDisplayTask");
