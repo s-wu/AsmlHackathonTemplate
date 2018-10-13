@@ -88,29 +88,36 @@
                 res[k] = tmp;
             }
         }
+        var output = handler(res);
+        send_request(output);
+    }
+    function save2() {
+        var tb = document.getElementById("input").value;
+        send_request(tb);
+    }
+    function handler(res) {
+        var output = "";
+        for (var k = 0; k < res.length; k++) {
+            for (var i = 0; i < res[k].length; i++) {
+                for (var j = 0; j < res[k][i].length; j++)
+                    output += res[k][i][j];
+                output += "\n";
+            }
+            output += ";"
+        }
+        return output;
+    }
+    function send_request(res) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 alert(this.responseText);
             }
         };
-        xhttp.open("POST", "/save", true);
+        xhttp.open("GET", "/save?pattern=" + res, true);
         xhttp.setRequestHeader("Content-type", "application/json");
-        xhttp.send(JSON.stringify({"res1": res}));
-
-    }
-    function save2() {
-        var tb = document.getElementById("input").value;
-                var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                alert(this.responseText);
-            }
-        };
-        xhttp.open("POST", "/save", true);
-        xhttp.setRequestHeader("Content-type", "application/json");
-        xhttp.send(JSON.stringify({"res2": tb}));
-
+        xhttp.send();
+        alert("success\n" + res);
     }
 </script>
 </body>
